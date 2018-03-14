@@ -1,0 +1,86 @@
+/**/
+
+@keyframes toaster {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#menu, #destination-picker {
+    position: absolute;
+    z-index: 500;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    overflow: hidden;
+}
+
+
+.menu-item {
+    background-color: #eeeeee;
+    width: 80vw;
+    height: 12vh;
+    line-height: 12vh;
+    font-family: "Roboto", "Segoe UI", sans-serif;
+    font-size: 20px;
+    margin: 10px 0px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.menu-item:hover {
+    background-color: rgba(200, 200, 200);
+}
+
+#back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    z-index: 900;
+    background-color: #2196F3;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+}
+
+#back svg {
+    margin: 14px 14px;
+}
+
+.animated-toast {
+    animation-name: toaster;
+    animation-duration: 5s;
+}
+
+#toast-msg {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    
+    color: white;
+    border-radius: 25px;
+    padding: 0px 20px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    vertical-align: middle;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+}

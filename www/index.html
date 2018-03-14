@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="components/loader.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body class="unselectable">
+    <div id="back">
+        <svg style="width:30px;height:30px" viewBox="0 0 24 24">
+            <path fill="#ffffff" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+        </svg>
+    </div>
+    
+    <div id="toast-msg">
+        Toast for u
+    </div>
+    
+    <div id="menu" class="menu">
+        <div class="menu-item" id="choose-destination">Choose Destination</div>
+        <div class="menu-item" id="surprise">Surprise Me!</div>
+        <div class="menu-item" id="directions">Directions</div>
+        <div class="menu-item" id="save-loc">Save Current Location</div>
+    </div>
+    
+    <div id="destination-picker" class="menu">
+        <div class="menu-item dest" data-addr="Brussels, Belgium">Brussels, Belgium</div>
+        <div class="menu-item dest" data-addr="2930 Pearl St, Boulder, CO 80301">Google Colorado</div>
+        <div class="menu-item dest" data-addr="8000 E Quincy Ave, Denver, CO 80237">Micro Center</div>
+        <div class="menu-item dest" data-addr="Evergreen, CO 80439">Evergreen</div>
+    </div>
+    
+    <div id="map"></div>
+    <script>
+      var directionsService; 
+      var directionsDisplay;
+      
+      var geocoder;;
+      
+      function initMap() {
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
+        geocoder = new google.maps.Geocoder;
+        
+        var locations = JSON.parse(storage.getItem("saved-locations"));
+        for (var loc in locations["locs"]){
+            geocoder.geocode({'location': {lat:locations["locs"][loc]["lat"] , lng:locations["locs"][loc]["long"] }}, function(results, status) {
+                //alert(results[0].formatted_address);
+                $("#destination-picker").append('<div class="menu-item dest" data-addr="' + results[0].formatted_address + '">' + results[0].formatted_address + '</div>');
+                
+            });
+        }
+        
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 50.8503, lng: 4.3517},
+          zoom: 14,
+          disableDefaultUI: true
+        });
+        directionsDisplay.setMap(map);
+      }
+      
+      function calculateAndDisplayRoute(origin, destination) {
+        directionsService.route({
+          origin: origin,
+          destination: destination,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+      
+      //map.center = {lat:50.8503, lng:4.3517}
+    </script>
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI9fr5nO2tk8YplkTiOwF9xVhHOzdr6QY&callback=initMap"
+    async defer></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
